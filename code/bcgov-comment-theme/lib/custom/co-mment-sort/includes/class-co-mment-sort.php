@@ -118,6 +118,7 @@ class Co_Mment_Sort {
      * side of the site.
      */
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-co-mment-sort-public.php';
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/co-mment-sort-public-display.php';
 
     /**
      * stable sort library
@@ -131,7 +132,9 @@ class Co_Mment_Sort {
      * Custom walker returns arrays from comments
      * 
      */
-    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-co-mment-sort-walker.php';
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-co-mment-walker-sort.php';
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-co-mment-walker-filter-date-range.php';
+    //require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-co-mment-walker-filter-search.php';
 
 		$this->loader = new Co_Mment_Sort_Loader();
 
@@ -189,6 +192,7 @@ class Co_Mment_Sort {
     // comment_form_after
     
     $this->loader->add_filter( 'comments_array', $plugin_public, 'get_comment_sort');
+    $this->loader->add_filter( 'comments_array', $plugin_public, 'get_comment_filter_date_range');
     //$this->loader->add_filter( 'previous_comments_link_attributes', $plugin_public, 'comments_link_attributes');
     //$this->loader->add_filter( 'next_comments_link_attributes', $plugin_public, 'comments_link_attributes');
     $this->loader->add_filter( 'get_comments_pagenum_link', $plugin_public, 'comments_pagenum_link');

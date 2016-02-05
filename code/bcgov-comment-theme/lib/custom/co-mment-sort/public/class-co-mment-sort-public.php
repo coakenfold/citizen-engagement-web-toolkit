@@ -99,24 +99,6 @@ class Co_Mment_Sort_Public {
 
 	}
 
-/*
-generate sort ui using hook
-
-use url params:
-../index.php/2016/01/27/test/comment-page-2/#comments?cos=r&cod=d
-cos
-type: sort
-r === replies
-d === date
-
-cod
-tupe: direction
-d === descending
-a === ascending
-
-update links in previous next to append sort
-*/
-
   /**
    * 
    *
@@ -127,6 +109,7 @@ update links in previous next to append sort
     if (count($comments) == 0) {
       return $comments;
     };
+
     $direction = true;
     if (isset($_GET['com_dir'])) {
       if ($_GET['com_dir'] == "asc") {
@@ -155,7 +138,7 @@ update links in previous next to append sort
    */
   public function get_comment_sort_date($comments, $direction_bool) {
     // returns array[0]= reply count, array[1]=date stamps
-    $walk = new Walker_Co_Mment_Sort();
+    $walk = new Co_Mment_Walker_Sort();
 
     $walkOutput = $walk->walk( $comments, 0 );
     $walkOutputDate = $walkOutput[1];
@@ -179,7 +162,7 @@ update links in previous next to append sort
    */
   public function get_comment_sort_replies($comments, $direction_bool) {
     // returns array[0]= reply count, array[1]=date stamps
-    $walk = new Walker_Co_Mment_Sort();
+    $walk = new Co_Mment_Walker_Sort();
     $walkOutput = $walk->walk( $comments, 0 );
     $walkOutputReplies = $walkOutput[0];
 
@@ -192,6 +175,36 @@ update links in previous next to append sort
     $comment_root_sorted = $walkOutputReplies;
     $comments_sorted = $this->merge_comment_array($comments, $comment_root_sorted);
     return $comments_sorted;
+  }
+
+  /**
+   * 
+   *
+   * @since     1.0.0
+   * @return    
+   */
+  public function get_comment_filter_date_range($comments, $args=[false, false]) {
+    // input: $comments ['date', 'date 1', 'date 2']
+    $walk = new Co_Mment_Walker_Filter_Date_Range();
+
+    $walkOutput = $walk->walk( $comments, 0, ['date', $args[0], $args[1]]);
+    
+    // pass through
+    return $walkOutput;
+  }
+
+  /**
+   * 
+   *
+   * @since     1.0.0
+   * @return    
+   */
+  public function get_comment_filter_search($comments, $args) {
+    // input: $comments ['search', 'search term(s)']
+    $walk = new Walker_Co_Mment_Filter_Search();
+
+    $walkOutput = $walk->walk( $comments, 0, ['search', $args[0]]);
+    return $walkOutput;
   }
 
   /**
@@ -280,6 +293,16 @@ update links in previous next to append sort
       $inputSort = 'date';
       $repliesState = 'is-inactive';
       $sort = 'date';
+      $date1 = '';
+      $date2 = '';
+
+      //dangerous input?
+      if (isset($_GET['com_date1'])) {
+        $date1 = $_GET['com_date1'];
+      }
+      if (isset($_GET['com_date2'])) {
+        $date2 = $_GET['com_date2'];
+      }
 
       if (isset($_GET['com_dir'])) {
         if ($_GET['com_dir'] == "asc") {
@@ -301,14 +324,10 @@ update links in previous next to append sort
             $inputSort = 'date';
           }
       }
-      ?>
-      <form class='js-co-form' method='get' action=''>
-        <input class='js-co-input-sort' type='hidden' name='com_sort' value='<?php echo $inputSort; ?>'>
-        <input class='js-co-input-dir' type='hidden' name='com_dir' value='<?php echo $inputDir; ?>'>
-        <button type='button' class='btn co_btn-sort co_btn-sort--date js-co-btn-sort-date' data-state='<?php echo $dateState; ?>'>Date</button>
-        <button type='button' class='btn co_btn-sort co_btn-sort--replies js-co-btn-sort-replies' data-state='<?php echo $repliesState; ?>'>Replies</button>
-      </form>
-      <?php 
+      co_mment_sort_display_sort($inputSort, $inputDir, $dateState, $repliesState );
+
+      co_mment_sort_display_filter_date($date1,$date2);
+      co_mment_sort_display_filter_search();
     }
   }
 

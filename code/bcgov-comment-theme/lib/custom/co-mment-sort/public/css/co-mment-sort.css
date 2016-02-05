@@ -24,3 +24,10 @@ button.co_btn-sort:hover {
 .co_btn-sort[data-state='is-asc']:after{
   content: " ▲";
 }
+
+.co_sort__container {
+  display: inline-block;
+}
+.co_filter__container {
+  float: right;
+}
