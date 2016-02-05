@@ -55,9 +55,8 @@ class Co_Mment_Walker_Filter_Date_Range extends Walker {
     // $args[2]//data2: date end
 
     // gmt strings
-    $date_start = '2016-01-29 06:04:49';//$args[1];
-    $date_end = '2016-02-05 05:06:53';//$args[2]
-    //$date_end = '2016-01-29 06:04:49';//$args[2]
+    $date_start = $args[1];
+    $date_end = $args[2];
 
     $comment_date = $item->comment_date_gmt;
     $above_start = $this->date1EqGtDate2($comment_date, $date_start);

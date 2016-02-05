@@ -183,14 +183,25 @@ class Co_Mment_Sort_Public {
    * @since     1.0.0
    * @return    
    */
-  public function get_comment_filter_date_range($comments, $args=[false, false]) {
-    // input: $comments ['date', 'date 1', 'date 2']
-    $walk = new Co_Mment_Walker_Filter_Date_Range();
+  public function get_comment_filter_date_range($comments) {
+    if (count($comments) == 0) {
+      return $comments;
+    };
 
-    $walkOutput = $walk->walk( $comments, 0, ['date', $args[0], $args[1]]);
-    
-    // pass through
-    return $walkOutput;
+    $dates = $this->get_dates();
+    $date1 = $dates[0];
+    $date2 = $dates[1];
+
+    if ($date1 && $date2) {
+      $walk = new Co_Mment_Walker_Filter_Date_Range();
+
+      $walkOutput = $walk->walk( $comments, 0, ['date', $date1, $date2]);
+      
+      // pass through
+      return $walkOutput;
+    } else {
+      return $comments;
+    }
   }
 
   /**
@@ -283,6 +294,35 @@ class Co_Mment_Sort_Public {
    * @since     1.0.0
    * @return    array    
    */
+  public function format_date($date) {
+    // 2016-01-27 00:02:17
+    $date = new DateTime($date);
+    return $date->format('Y-m-d H:i:s');
+  }
+  /**
+   * 
+   *
+   * @since     1.0.0
+   * @return    array    
+   */
+  public function get_dates() {
+    $dates = [false, false];
+    if (isset($_GET['com_date1'])) {
+      $dates[0] = $this->format_date($_GET['com_date1']);
+    }
+    if (isset($_GET['com_date2'])) {
+      $dates[1] = $this->format_date($_GET['com_date2']);
+    }
+    return $dates;
+  }
+
+
+  /**
+   * 
+   *
+   * @since     1.0.0
+   * @return    array    
+   */
   public function comments_ui() {
 
     if (have_comments()){
@@ -293,16 +333,11 @@ class Co_Mment_Sort_Public {
       $inputSort = 'date';
       $repliesState = 'is-inactive';
       $sort = 'date';
-      $date1 = '';
-      $date2 = '';
 
-      //dangerous input?
-      if (isset($_GET['com_date1'])) {
-        $date1 = $_GET['com_date1'];
-      }
-      if (isset($_GET['com_date2'])) {
-        $date2 = $_GET['com_date2'];
-      }
+      $dates = $this->get_dates();
+      $date1 = $dates[0];
+      $date2 = $dates[1];
+      
 
       if (isset($_GET['com_dir'])) {
         if ($_GET['com_dir'] == "asc") {
@@ -327,7 +362,8 @@ class Co_Mment_Sort_Public {
       co_mment_sort_display_sort($inputSort, $inputDir, $dateState, $repliesState );
 
       co_mment_sort_display_filter_date($date1,$date2);
-      co_mment_sort_display_filter_search();
+      
+      //co_mment_sort_display_filter_search();
     }
   }
 
