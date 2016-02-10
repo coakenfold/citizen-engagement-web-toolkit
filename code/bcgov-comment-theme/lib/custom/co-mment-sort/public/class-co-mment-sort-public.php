@@ -188,7 +188,7 @@ class Co_Mment_Sort_Public {
       return $comments;
     };
 
-    $dates = $this->get_dates();
+    $dates = $this->date_get_params();
     $date1 = $dates[0];
     $date2 = $dates[1];
 
@@ -304,10 +304,24 @@ class Co_Mment_Sort_Public {
    * @since     1.0.0
    * @return    array    
    */
-  public function format_date($date) {
+  public function date_format($date) {
     // 2016-01-27 00:02:17
-    $date = new DateTime($date);
+    // 2015-01-01+00%3A00%3A00
+    $date = new DateTime(urldecode($date));
     return $date->format('Y-m-d H:i:s');
+  }
+  /**
+   * 
+   *
+   * @since     1.0.0
+   * @return    array    
+   */
+  public function date_valid($date) {
+    if($date === "" || $date === false || $date === null) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   /**
@@ -316,30 +330,18 @@ class Co_Mment_Sort_Public {
    * @since     1.0.0
    * @return    array    
    */
-  public function get_dates() {
-
-    // if($_GET["com_date1"] === "")    echo "com_date1 is an empty string\n";
-    // if($_GET["com_date1"] === false) echo "com_date1 is false\n";
-    // if($_GET["com_date1"] === null)  echo "com_date1 is null\n";
-    // if(isset($_GET["com_date1"]))    echo "com_date1 is set\n";
-    // if(!empty($_GET["com_date1"]))   echo "com_date1 is not empty\n";
-
+  public function date_get_params() {
 
     $dates = [false, false];
-    $today = $this->get_today();
 
     if (isset($_GET['com_date1'])) {
-      if ($_GET['com_date1'] === "") {
-        $dates[0] = $this->format_date($today[0]);
-      } else {
-        $dates[0] = $this->format_date($_GET['com_date1']);
+      if ($this->date_valid($_GET['com_date1'])) {
+        $dates[0] = $this->date_format($_GET['com_date1']);
       };
     }
     if (isset($_GET['com_date2'])) {
-      if ($_GET['com_date2'] === "") {
-        $dates[1] = $this->format_date($today[1]);
-      } else {
-        $dates[1] = $this->format_date($_GET['com_date2']);
+      if ($this->date_valid($_GET['com_date2'])) {
+        $dates[1] = $this->date_format($_GET['com_date2']);
       };
     }
     return $dates;
@@ -367,7 +369,7 @@ class Co_Mment_Sort_Public {
    */
   public function comments_ui() {
 
-    $dates = $this->get_dates();
+    $dates = $this->date_get_params();
     $date1 = $dates[0];
     $date2 = $dates[1];
 
@@ -406,6 +408,7 @@ class Co_Mment_Sort_Public {
       
       //co_mment_sort_display_filter_search();
     } else {
+
       // show ui to undo if no comments due to date or search param
       if (isset($_GET['com_date1']) || isset($_GET['com_date2'])) {
         co_mment_sort_display_filter_date($date1,$date2);
@@ -413,10 +416,7 @@ class Co_Mment_Sort_Public {
       if (isset($_GET['com_search'])) {
         co_mment_sort_display_filter_search();
       }
-
     }
-
-
   }
 
 
