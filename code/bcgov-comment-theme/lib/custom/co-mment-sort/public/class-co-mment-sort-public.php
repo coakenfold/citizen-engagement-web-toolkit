@@ -192,14 +192,24 @@ class Co_Mment_Sort_Public {
     $date1 = $dates[0];
     $date2 = $dates[1];
 
+
     if ($date1 && $date2) {
       $walk = new Co_Mment_Walker_Filter_Date_Range();
-
-      $walkOutput = $walk->walk( $comments, 0, ['date', $date1, $date2]);
       
-      // pass through
+      $walker_args = ['date', $date1, $date2];
+
+      // check date order
+      // $d_old = new DateTime($date1);
+      // $d_new = new DateTime($date2);
+      // if ($d_old > $d_new) {
+      //   $walker_args = ['date', $date2, $date1];
+      // }
+
+      $walkOutput = $walk->walk( $comments, 0, $walker_args);
+      
       return $walkOutput;
     } else {
+      // pass through
       return $comments;
     }
   }
@@ -299,6 +309,7 @@ class Co_Mment_Sort_Public {
     $date = new DateTime($date);
     return $date->format('Y-m-d H:i:s');
   }
+
   /**
    * 
    *
@@ -306,14 +317,45 @@ class Co_Mment_Sort_Public {
    * @return    array    
    */
   public function get_dates() {
+
+    // if($_GET["com_date1"] === "")    echo "com_date1 is an empty string\n";
+    // if($_GET["com_date1"] === false) echo "com_date1 is false\n";
+    // if($_GET["com_date1"] === null)  echo "com_date1 is null\n";
+    // if(isset($_GET["com_date1"]))    echo "com_date1 is set\n";
+    // if(!empty($_GET["com_date1"]))   echo "com_date1 is not empty\n";
+
+
     $dates = [false, false];
+    $today = $this->get_today();
+
     if (isset($_GET['com_date1'])) {
-      $dates[0] = $this->format_date($_GET['com_date1']);
+      if ($_GET['com_date1'] === "") {
+        $dates[0] = $this->format_date($today[0]);
+      } else {
+        $dates[0] = $this->format_date($_GET['com_date1']);
+      };
     }
     if (isset($_GET['com_date2'])) {
-      $dates[1] = $this->format_date($_GET['com_date2']);
+      if ($_GET['com_date2'] === "") {
+        $dates[1] = $this->format_date($today[1]);
+      } else {
+        $dates[1] = $this->format_date($_GET['com_date2']);
+      };
     }
     return $dates;
+  }
+  /**
+   * 
+   *
+   * @since     1.0.0
+   * @return    array    
+   */
+  public function get_today() {
+    //2016-02-10 13:25:08
+    $timestamp = time()+date("Z");
+    $start = gmdate("Y-m-d 00:00:00", $timestamp);
+    $now = gmdate("Y-m-d H:i:s",$timestamp);
+    return [$start, $now];
   }
 
 
@@ -325,6 +367,10 @@ class Co_Mment_Sort_Public {
    */
   public function comments_ui() {
 
+    $dates = $this->get_dates();
+    $date1 = $dates[0];
+    $date2 = $dates[1];
+
     if (have_comments()){
       // default sort options
       $dateState = 'is-desc';
@@ -333,11 +379,6 @@ class Co_Mment_Sort_Public {
       $inputSort = 'date';
       $repliesState = 'is-inactive';
       $sort = 'date';
-
-      $dates = $this->get_dates();
-      $date1 = $dates[0];
-      $date2 = $dates[1];
-      
 
       if (isset($_GET['com_dir'])) {
         if ($_GET['com_dir'] == "asc") {
@@ -364,7 +405,18 @@ class Co_Mment_Sort_Public {
       co_mment_sort_display_filter_date($date1,$date2);
       
       //co_mment_sort_display_filter_search();
+    } else {
+      // show ui to undo if no comments due to date or search param
+      if (isset($_GET['com_date1']) || isset($_GET['com_date2'])) {
+        co_mment_sort_display_filter_date($date1,$date2);
+      }
+      if (isset($_GET['com_search'])) {
+        co_mment_sort_display_filter_search();
+      }
+
     }
+
+
   }
 
 
