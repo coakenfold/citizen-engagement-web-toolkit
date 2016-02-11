@@ -73,7 +73,8 @@ class Co_Mment_Sort_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->co_mment_sort, plugin_dir_url( __FILE__ ) . 'css/co-mment-sort.css', array(), $this->version, 'all' );
+    wp_enqueue_style( $this->co_mment_sort . 'datepicker', plugin_dir_url( __FILE__ ) . 'libraries/bootstrap-datepicker-1.5.1-dist/css/bootstrap-datepicker.standalone.min.css', array(), $this->version, 'all' );
+    wp_enqueue_style( $this->co_mment_sort, plugin_dir_url( __FILE__ ) . 'css/co-mment-sort.css', array(), $this->version, 'all' );
 
 	}
 
@@ -95,8 +96,9 @@ class Co_Mment_Sort_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-		wp_enqueue_script( $this->co_mment_sort, plugin_dir_url( __FILE__ ) . 'js/co-mment-sort-public.js', array( 'jquery' ), $this->version, false );
 
+    wp_enqueue_script( $this->co_mment_sort . 'datepicker', plugin_dir_url( __FILE__ ) . 'libraries/bootstrap-datepicker-1.5.1-dist/js/bootstrap-datepicker.min.js', array( 'jquery' ), $this->version, false );
+    wp_enqueue_script( $this->co_mment_sort, plugin_dir_url( __FILE__ ) . 'js/co-mment-sort-public.js', array( 'jquery' ), $this->version, false );
 	}
 
   /**
