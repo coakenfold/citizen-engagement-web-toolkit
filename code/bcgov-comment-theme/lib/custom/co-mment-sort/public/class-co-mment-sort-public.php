@@ -223,11 +223,28 @@ class Co_Mment_Sort_Public {
    * @return    
    */
   public function get_comment_filter_search($comments, $args) {
-    // input: $comments ['search term(s)']
-    $walk = new Co_Mment_Walker_Filter_Search();
+    if (count($comments) == 0) {
+      return $comments;
+    };
 
-    $walkOutput = $walk->walk( $comments, 0, $args);
-    return $walkOutput;
+    $g_com_search = $_GET['com_search'];
+    if (isset($g_com_search)) {
+      if ($this->url_param_valid($g_com_search)) {
+        // url decode
+        $search = explode(" ", urldecode($g_com_search));
+      };
+    }
+
+    if (isset($search)) {
+      $walk = new Co_Mment_Walker_Filter_Search();
+
+      $walkOutput = $walk->walk( $comments, 0, $search);
+      
+      return $walkOutput;
+    } else {
+      // pass through
+      return $comments;
+    }
   }
 
   /**
@@ -318,8 +335,8 @@ class Co_Mment_Sort_Public {
    * @since     1.0.0
    * @return    array    
    */
-  public function date_valid($date) {
-    if($date === "" || $date === false || $date === null) {
+  public function url_param_valid($param) {
+    if($param === "" || $param === false || $param === null) {
       return false;
     } else {
       return true;
@@ -337,31 +354,17 @@ class Co_Mment_Sort_Public {
     $dates = [false, false];
 
     if (isset($_GET['com_date1'])) {
-      if ($this->date_valid($_GET['com_date1'])) {
+      if ($this->url_param_valid($_GET['com_date1'])) {
         $dates[0] = $this->date_format($_GET['com_date1']);
       };
     }
     if (isset($_GET['com_date2'])) {
-      if ($this->date_valid($_GET['com_date2'])) {
+      if ($this->url_param_valid($_GET['com_date2'])) {
         $dates[1] = $this->date_format($_GET['com_date2']);
       };
     }
     return $dates;
   }
-  /**
-   * 
-   *
-   * @since     1.0.0
-   * @return    array    
-   */
-  public function get_today() {
-    //2016-02-10 13:25:08
-    $timestamp = time()+date("Z");
-    $start = gmdate("Y-m-d 00:00:00", $timestamp);
-    $now = gmdate("Y-m-d H:i:s",$timestamp);
-    return [$start, $now];
-  }
-
 
   /**
    * 
@@ -374,6 +377,12 @@ class Co_Mment_Sort_Public {
     $dates = $this->date_get_params();
     $date1 = $dates[0];
     $date2 = $dates[1];
+
+    if (isset($_GET['com_search'])) {
+      if ($this->url_param_valid($_GET['com_search'])) {
+        $search = $_GET['com_search'];
+      };
+    }
 
     if (have_comments()){
       // default sort options
@@ -408,15 +417,15 @@ class Co_Mment_Sort_Public {
 
       co_mment_sort_display_filter_date($date1,$date2);
       
-      co_mment_sort_display_filter_search();
+      co_mment_sort_display_filter_search($search);
     } else {
 
       // show ui to undo if no comments due to date or search param
       if (isset($_GET['com_date1']) || isset($_GET['com_date2'])) {
         co_mment_sort_display_filter_date($date1,$date2);
       }
-      if (isset($_GET['com_search'])) {
-        co_mment_sort_display_filter_search();
+      if (isset($search)) {
+        co_mment_sort_display_filter_search($search);
       }
     }
   }

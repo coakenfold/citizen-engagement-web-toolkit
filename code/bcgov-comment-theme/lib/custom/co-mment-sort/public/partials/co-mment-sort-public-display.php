@@ -33,9 +33,9 @@ function co_mment_sort_display_filter_date($date1='', $date2='') { ?>
 <?php }
 
 
-function co_mment_sort_display_filter_search() { ?>
+function co_mment_sort_display_filter_search($search='') { ?>
 <form method="get" class="search-form form-inline co_search__container js-co-form-search" action="">
-  <input type="search" value="" name="com_search" class="search-field form-control co_search__input" placeholder="Search Comments">
+  <input type="search" value='<?php echo $search; ?>' name="com_search" class="search-field form-control co_search__input" placeholder="Search Comments">
   <button type="submit" class="btn co_search__btn">Search</button>
 </form>
 <?php }
