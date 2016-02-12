@@ -193,11 +193,12 @@ class Co_Mment_Sort {
     
     $this->loader->add_filter( 'comments_array', $plugin_public, 'get_comment_sort');
     $this->loader->add_filter( 'comments_array', $plugin_public, 'get_comment_filter_date_range');
+//    $this->loader->add_filter( 'comments_array', $plugin_public, 'get_comment_filter_search');
+
     //$this->loader->add_filter( 'previous_comments_link_attributes', $plugin_public, 'comments_link_attributes');
     //$this->loader->add_filter( 'next_comments_link_attributes', $plugin_public, 'comments_link_attributes');
+
     $this->loader->add_filter( 'get_comments_pagenum_link', $plugin_public, 'comments_pagenum_link');
-    
- 
 	}
 
 	/**

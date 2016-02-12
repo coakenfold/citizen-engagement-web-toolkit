@@ -23,21 +23,19 @@ function co_mment_sort_display_sort($inputSort, $inputDir, $dateState, $repliesS
 
 function co_mment_sort_display_filter_date($date1='', $date2='') { ?>
 <form class='co_filter__container js-co-form-filter' method='get' action=''>
-  <input class='co_filter__input js-co-input-date1' type='input' name='com_date1' value='<?php echo $date1; ?>' placeholder='yyyy-mm-dd hh:mm:ss'>
-  <input class='co_filter__input js-co-input-date2' type='input' name='com_date2' value='<?php echo $date2; ?>' placeholder='yyyy-mm-dd hh:mm:ss'>
-  <button type='submit' class='btn co_btn-sort'>Filter</button>
+  <div class="co_filter__dates input-daterange input-group js-input-daterange">
+      <input type="text" class="input-sm form-control" name="com_date1" value='<?php echo $date1; ?>' placeholder='yyyy-mm-dd' />
+      <span class="input-group-addon">to</span>
+      <input type="text" class="input-sm form-control" name="com_date2" value='<?php echo $date2; ?>' placeholder='yyyy-mm-dd' />
+  </div>
+  <button type='submit' class='btn co_filter__btn'>Filter</button>
 </form>
 <?php }
 
 
 function co_mment_sort_display_filter_search() { ?>
-<form role="search" method="get" class="search-form form-inline co_search__container js-co-form-search" action="">
-  <label class="sr-only">Search for:</label>
-  <div class="input-group">
-    <input type="search" value="" name="s" class="search-field form-control" placeholder="Search Comments" required="">
-    <span class="input-group-btn">
-      <button type="submit" class="search-submit btn btn-default">Search</button>
-    </span>
-  </div>
+<form method="get" class="search-form form-inline co_search__container js-co-form-search" action="">
+  <input type="search" value="" name="com_search" class="search-field form-control co_search__input" placeholder="Search Comments">
+  <button type="submit" class="btn co_search__btn">Search</button>
 </form>
 <?php }

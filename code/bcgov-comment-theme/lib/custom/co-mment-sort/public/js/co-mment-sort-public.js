@@ -144,13 +144,29 @@ js-co-input-dir
     $('.js-co-form').submit();
   }
 
+  function initDatepicker() {
+    var jsDp = $('.js-input-daterange');
+    if (jsDp.length > 0) {
+      jsDp.datepicker({
+          format: "yyyy-mm-dd",
+          todayBtn: "linked",
+          clearBtn: true,
+          todayHighlight: true
+      });
+    }
+  }
+
 
    $(function() {
+     
      $('body').on('click', '.js-co-btn-sort-date', function(e){
       eventClickDate($(this));
      });
+
      $('body').on('click', '.js-co-btn-sort-replies', function(e){
       eventClickReplies($(this));
      });
+
+     initDatepicker();
    });
 })( jQuery );

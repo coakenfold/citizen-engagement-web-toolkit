@@ -1,12 +1,18 @@
 
-.co_btn-sort {
+.co_btn-sort,
+.co_filter__btn,
+.co_search__btn {
   cursor: pointer;
   color: #fff;
   background-color: #27ae60;
   border-color: #295;
 }
 .co_btn-sort:active,
-button.co_btn-sort:hover {
+button.co_btn-sort:hover,
+.co_filter__btn:active,
+button.co_filter__btn:hover ,
+.co_search__btn:active,
+button.co_search__btn:hover {
   color: #fff;
   background-color: #1e8449;
   border-color: #176739;
@@ -28,6 +34,43 @@ button.co_btn-sort:hover {
 .co_sort__container {
   display: inline-block;
 }
+
 .co_filter__container {
   float: right;
+  width: 290px;
+}
+
+.co_filter__dates {
+  width: 225px;
+  float: left;
+}
+
+.co_filter__dates .input-sm {
+  height: 35px;
+}
+
+.co_filter__btn {
+  float: right;
+  width: 60px;
+}
+
+.co_filter__container + .co_search__container {
+  margin-top: 5px;
+}
+
+.co_search__container {
+  float: right;
+  clear: right;
+  width: 247px;
+}
+
+.co_search__btn {
+  float: right;
+  width: 70px;
+}
+
+.form-control.co_search__input,
+.co_search__input {
+  float: left;
+  width: 175px;
 }

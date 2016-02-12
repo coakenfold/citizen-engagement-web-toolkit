@@ -223,10 +223,10 @@ class Co_Mment_Sort_Public {
    * @return    
    */
   public function get_comment_filter_search($comments, $args) {
-    // input: $comments ['search', 'search term(s)']
-    $walk = new Walker_Co_Mment_Filter_Search();
+    // input: $comments ['search term(s)']
+    $walk = new Co_Mment_Walker_Filter_Search();
 
-    $walkOutput = $walk->walk( $comments, 0, ['search', $args[0]]);
+    $walkOutput = $walk->walk( $comments, 0, $args);
     return $walkOutput;
   }
 
@@ -310,7 +310,7 @@ class Co_Mment_Sort_Public {
     // 2016-01-27 00:02:17
     // 2015-01-01+00%3A00%3A00
     $date = new DateTime(urldecode($date));
-    return $date->format('Y-m-d H:i:s');
+    return $date->format('Y-m-d');
   }
   /**
    * 
@@ -408,7 +408,7 @@ class Co_Mment_Sort_Public {
 
       co_mment_sort_display_filter_date($date1,$date2);
       
-      //co_mment_sort_display_filter_search();
+      co_mment_sort_display_filter_search();
     } else {
 
       // show ui to undo if no comments due to date or search param
