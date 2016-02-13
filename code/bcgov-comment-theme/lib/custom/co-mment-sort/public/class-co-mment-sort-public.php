@@ -285,28 +285,64 @@ class Co_Mment_Sort_Public {
    * @since     1.0.0
    * @return    array    
    */
-  public function comments_pagenum_link($content) {
-    
-
+  public function get_url_params_array() {
+    // com_sort=replies
+    // com_dir=asc
+    // com_date1=2016-01-01
+    // com_date2=2016-02-06
+    // com_search=wed
+    $date1 = '';
+    $date2 = '';
     $dir = 'desc';
     $sort = 'date';
+
+    $url_params = array();
 
     if (isset($_GET['com_dir'])) {
       if ($_GET['com_dir'] == "asc") {
         $dir = 'asc';
       }
+      array_push($url_params, 'com_dir='.$dir);
     }
+
     if (isset($_GET['com_sort'])) {
       if ($_GET['com_sort'] == "replies") {
         $sort = 'replies';
       }
+      array_push($url_params, 'com_sort='.$sort);
     }
+
+    if (isset($_GET['com_date1'])) {
+      $date1 = $this->date_format($_GET['com_date1']);
+      array_push($url_params, 'com_date1='.$date1);
+    }
+
+    if (isset($_GET['com_date2'])) {
+      $date2 = $this->date_format($_GET['com_date2']);
+      array_push($url_params, 'com_date2='.$date2);
+    }
+
+    if (isset($_GET['com_search'])) {
+      array_push($url_params, 'com_search='.$_GET['com_search']);
+    }
+
+    return $url_params;
+  }
+
+
+  /**
+   * 
+   *
+   * @since     1.0.0
+   * @return    array    
+   */
+  public function comments_pagenum_link($content) {
 
     $urlParts = parse_url($content);
 
     $urlPre = $urlParts['scheme'] ."://". $urlParts['host'] ."/". $urlParts['path'];
 
-    $urlParams = 'com_sort='.$sort.'&com_dir='.$dir;
+    $urlParams = join('&', $this->get_url_params_array());
 
     if ($urlParts['query']) {
       $urlPost = $urlParts['query'] ."&". $urlParams;
