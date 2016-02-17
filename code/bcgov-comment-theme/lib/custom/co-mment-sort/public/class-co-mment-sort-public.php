@@ -139,7 +139,7 @@ class Co_Mment_Sort_Public {
    * @return    
    */
   public function get_comment_sort_date($comments, $direction_bool) {
-    // returns array[0]= reply count, array[1]=date stamps
+
     $walk = new Co_Mment_Walker_Sort();
 
     $walkOutput = $walk->walk( $comments, 0 );
@@ -150,7 +150,6 @@ class Co_Mment_Sort_Public {
     } else {
       sarsort($walkOutputDate);
     }
-    
     $comment_root_sorted = $walkOutputDate;
     $comments_sorted = $this->merge_comment_array($comments, $comment_root_sorted);
     return $comments_sorted;
@@ -190,9 +189,14 @@ class Co_Mment_Sort_Public {
       return $comments;
     };
 
-    $dates = $this->date_get_params();
-    $date1 = $dates[0];
-    $date2 = $dates[1];
+    $params = $this->get_params();
+
+    if (array_key_exists('com_date1', $params)) {
+      $date1 = $params['com_date1'];
+    }
+    if (array_key_exists('com_date2', $params)) {
+      $date2 = $params['com_date2'];
+    }
 
 
     if ($date1 && $date2) {
@@ -383,23 +387,54 @@ class Co_Mment_Sort_Public {
    * 
    *
    * @since     1.0.0
-   * @return    array    
+   * @return    array
    */
-  public function date_get_params() {
+  public function get_params() {
 
-    $dates = [false, false];
+    $params = array();
+    
+    // Sort direction
+    if (isset($_GET['com_dir'])) {
+      if ($_GET['com_dir'] == 'asc') {
+        $params['com_dir'] = 'asc';
+      } else {
+        $params['com_dir'] = 'desc';
+      }
+    } else {
+      $params['com_dir'] = 'desc';
+    }
 
+    // Sort by date or replies
+    if (isset($_GET['com_sort'])) {
+      if ($_GET['com_sort'] == 'replies') {
+        $params['com_sort'] = 'replies';
+      } else {
+        $params['com_sort'] = 'date';
+      }
+    } else {
+      $params['com_sort'] = 'date';
+    }
+
+    // Filter by date range
     if (isset($_GET['com_date1'])) {
       if ($this->url_param_valid($_GET['com_date1'])) {
-        $dates[0] = $this->date_format($_GET['com_date1']);
+        $params['com_date1'] = $this->date_format($_GET['com_date1']);
       };
     }
     if (isset($_GET['com_date2'])) {
       if ($this->url_param_valid($_GET['com_date2'])) {
-        $dates[1] = $this->date_format($_GET['com_date2']);
+        $params['com_date2'] = $this->date_format($_GET['com_date2']);
       };
     }
-    return $dates;
+
+    // Filter by search term
+    if (isset($_GET['com_search'])) {
+      if ($this->url_param_valid($_GET['com_search'])) {
+        $params['com_search'] = $_GET['com_search'];
+      };
+    }
+
+    return $params;
   }
 
   /**
@@ -410,64 +445,43 @@ class Co_Mment_Sort_Public {
    */
   public function comments_ui() {
 
-    $dates = $this->date_get_params();
-    $date1 = $dates[0];
-    $date2 = $dates[1];
+    $params = $this->get_params();
 
-    if (isset($_GET['com_search'])) {
-      if ($this->url_param_valid($_GET['com_search'])) {
-        $search = $_GET['com_search'];
-      };
+    if (array_key_exists('com_search', $params)) {
+        $search = $params['com_search'];
+    }
+    if (array_key_exists('com_date1', $params)) {
+        $date1 = $params['com_date1'];
+    }
+    if (array_key_exists('com_date2', $params)) {
+        $date2 = $params['com_date2'];
     }
 
     if (have_comments()){
-      // default sort options
-      $dateState = 'is-desc';
-      $direction = 'is-desc';
-      $inputDir = 'desc';
-      $inputSort = 'date';
-      $repliesState = 'is-inactive';
-      $sort = 'date';
-
-      if (isset($_GET['com_dir'])) {
-        if ($_GET['com_dir'] == "asc") {
-          $direction = 'is-asc';
-          $inputDir = 'asc';
-        }
-      }
-
-
-      // change defaults
-      if (isset($_GET['com_sort'])) {
-          if ($_GET['com_sort'] == "replies") {
-            $repliesState = $direction;
-            $dateState = 'is-inactive';
-            $inputSort = 'replies';
-          } else {
-            $repliesState = 'is-inactive';
-            $dateState = $direction;
-            $inputSort = 'date';
-          }
-      }
-      co_mment_sort_display_sort($inputSort, $inputDir, $dateState, $repliesState );
-
-      co_mment_sort_display_filter_date($date1,$date2);
       
-      co_mment_sort_display_filter_search($search);
-    } else {
 
-      // show ui to undo if no comments due to date or search param
-      if (isset($_GET['com_date1']) || isset($_GET['com_date2'])) {
-        co_mment_sort_display_filter_date($date1,$date2);
+      // co_mment_sort_display_sort($inputSort, $inputDir, $dateState, $repliesState );
+      // co_mment_sort_display_filter_date($date1, $date2);
+      // co_mment_sort_display_filter_search($search);
+
+      co_mment_sort_display_sort($params, true);
+      co_mment_sort_display_filter_date($params, true);
+      co_mment_sort_display_filter_search($params, true);
+    } else {
+      // No comments,
+      // show ui to undo if date or search params
+
+      if (isset($date1) || isset($date2)) {
+        //co_mment_sort_display_filter_date($date1, $date2);
+        
+        co_mment_sort_display_filter_date($params, false);
       }
       if (isset($search)) {
-        co_mment_sort_display_filter_search($search);
+        //co_mment_sort_display_filter_search($search);
+        
+        co_mment_sort_display_filter_search($params, false);
       }
     }
   }
-
-
-
-
 
 }
