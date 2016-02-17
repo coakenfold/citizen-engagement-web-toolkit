@@ -1,5 +1,9 @@
 <?php 
-
+/**
+ * Sorts comments by date or # of replies
+ *
+ * @since    1.0.0
+ */
 class Co_Mment_Walker_Sort extends Walker {
   private $root_id;
   private $comments_root_replies = array();

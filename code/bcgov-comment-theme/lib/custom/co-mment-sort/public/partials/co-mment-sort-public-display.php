@@ -5,13 +5,12 @@
  *
  * This file is used to markup the public-facing aspects of the plugin.
  *
- * @link       http://oakenfold.ca
+ * @link       http://oakenfold.ca/co-mment-sort
  * @since      1.0.0
  *
  * @package    Co_Mment_Sort
  * @subpackage Co_Mment_Sort/public/partials
  */
-
 function co_mment_sort_inputs_hidden($params) {
   $inputs = array( 
     'com_date1' => array (
@@ -134,7 +133,7 @@ function co_mment_sort_display_filter_date($params, $hasComments) {
     <span class='input-group-addon'>to</span>
     <?php echo $inputs['com_date2']['text']; ?>
   </div>
-  <button type='submit' class='btn co_filter__btn'>Filter</button>
+  <button type='submit' class='btn co_btn'>Filter</button>
 </form>
 <?php }
 
@@ -152,4 +151,26 @@ function co_mment_sort_display_filter_search($params, $hasComments) {
   ?>
   <button type='submit' class='btn co_search__btn'>Search</button>
 </form>
+<?php }
+
+
+function co_mment_sort_display_no_results($has_dates=false, $has_search=false) { 
+?>
+<div class='co_message'>
+  <?php if ($has_dates == true && $has_search == true) {
+    $msg = 'No comments match the selected date range &amp; search term.';
+    $btn = 'Clear Date Range &amp; Search';
+  }
+  if ($has_dates == true && $has_search == false) {
+    $msg = 'No comments match the selected date range.';
+    $btn = 'Clear Date Range';
+  }
+  if ($has_dates == false && $has_search == true) {
+    $msg = 'No comments match the search term.';
+    $btn = 'Clear Search';
+  }
+  ?>
+  <h4><?php echo $msg; ?></h4>
+  <p><a class='btn co_btn' href='<?php echo the_permalink(); ?>'><?php echo $btn; ?></a></p>
+</div>
 <?php }

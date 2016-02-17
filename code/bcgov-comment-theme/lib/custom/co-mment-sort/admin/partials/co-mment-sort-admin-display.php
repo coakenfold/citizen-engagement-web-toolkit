@@ -5,7 +5,7 @@
  *
  * This file is used to markup the admin-facing aspects of the plugin.
  *
- * @link       http://oakenfold.ca
+ * @link       http://oakenfold.ca/co-mment-sort
  * @since      1.0.0
  *
  * @package    Co_Mment_Sort

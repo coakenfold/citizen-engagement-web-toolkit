@@ -6,7 +6,7 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       http://oakenfold.ca
+ * @link       http://oakenfold.ca/co-mment-sort
  * @since      1.0.0
  *
  * @package    Co_Mment_Sort

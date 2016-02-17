@@ -1,32 +1,9 @@
 <?php 
-/*
-A user can filter information through a date field:
-
-  every element add if between date range
-  input: $comments ['date', 'date 1', 'date 2']
-  output: $commentsFiltered
-
-*/
-/*
-[0] => stdClass Object
-  (
-    [comment_ID] => 12
-    [comment_post_ID] => 4
-    [comment_author] => @coak
-    [comment_author_email] => web@oakenfold.ca
-    [comment_author_url] => 
-    [comment_author_IP] => 127.0.0.1
-    [comment_date] => 2016-01-27 00:02:17
-    [comment_date_gmt] => 2016-01-27 00:02:17
-    [comment_content] => asdfasd
-    [comment_karma] => 0
-    [comment_approved] => 1
-    [comment_agent] => Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36
-    [comment_type] => 
-    [comment_parent] => 0
-    [user_id] => 1
-  )
-*/
+/**
+ * A user can filter information through a date field
+ *
+ * @since    1.0.1
+ */
 class Co_Mment_Walker_Filter_Date_Range extends Walker {
   private $comments_output = array();
 

@@ -8,15 +8,15 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              http://oakenfold.ca
- * @since             0.0.1
+ * @link              http://oakenfold.ca/co-mment-sort
+ * @since             1.0.0
  * @package           Co_Mment_Sort
  *
  * @wordpress-plugin
  * Plugin Name:       CO Mment sort
- * Plugin URI:        http://oakenfold.ca/co-mment-sort-uri/
+ * Plugin URI:        http://oakenfold.ca/co-mment-sort
  * Description:       Sort comments by date & number of replies per comment
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Chad Oakenfold
  * Author URI:        http://oakenfold.ca/
  * License:           GPL-2.0+

@@ -1,6 +1,6 @@
 
 .co_btn-sort,
-.co_filter__btn,
+.co_btn,
 .co_search__btn {
   cursor: pointer;
   color: #fff;
@@ -9,8 +9,8 @@
 }
 .co_btn-sort:active,
 button.co_btn-sort:hover,
-.co_filter__btn:active,
-button.co_filter__btn:hover ,
+.co_btn:active,
+button.co_btn:hover ,
 .co_search__btn:active,
 button.co_search__btn:hover {
   color: #fff;
@@ -48,8 +48,7 @@ button.co_search__btn:hover {
 .co_filter__dates .input-sm {
   height: 35px;
 }
-
-.co_filter__btn {
+.co_filter__container .co_btn {
   float: right;
   width: 60px;
 }
@@ -73,4 +72,11 @@ button.co_search__btn:hover {
 .co_search__input {
   float: left;
   width: 175px;
+}
+
+.co_message {
+  clear: both;
+  width: 100%;
+  padding: 20px 0 20px;
+  margin-bottom: 80px;
 }

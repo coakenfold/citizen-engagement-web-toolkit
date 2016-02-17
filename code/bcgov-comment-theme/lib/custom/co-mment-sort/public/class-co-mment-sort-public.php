@@ -3,7 +3,7 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * @link       http://oakenfold.ca
+ * @link       http://oakenfold.ca/co-mment-sort
  * @since      1.0.0
  *
  * @package    Co_Mment_Sort
@@ -181,7 +181,7 @@ class Co_Mment_Sort_Public {
   /**
    * 
    *
-   * @since     1.0.0
+   * @since     1.0.1
    * @return    
    */
   public function get_comment_filter_date_range($comments) {
@@ -223,7 +223,7 @@ class Co_Mment_Sort_Public {
   /**
    * 
    *
-   * @since     1.0.0
+   * @since     1.0.1
    * @return    
    */
   public function get_comment_filter_search($comments, $args) {
@@ -255,7 +255,7 @@ class Co_Mment_Sort_Public {
    * 
    *
    * @since     1.0.0
-   * @return    array    
+   * @return    array
    */
   public function merge_comment_array($comments, $comment_root_sorted) {
     // build an 'index' array of the original comments
@@ -287,47 +287,14 @@ class Co_Mment_Sort_Public {
    * 
    *
    * @since     1.0.0
-   * @return    array    
+   * @return    array
    */
   public function get_url_params_array() {
-    // com_sort=replies
-    // com_dir=asc
-    // com_date1=2016-01-01
-    // com_date2=2016-02-06
-    // com_search=wed
-    $date1 = '';
-    $date2 = '';
-    $dir = 'desc';
-    $sort = 'date';
-
     $url_params = array();
 
-    if (isset($_GET['com_dir'])) {
-      if ($_GET['com_dir'] == "asc") {
-        $dir = 'asc';
-      }
-      array_push($url_params, 'com_dir='.$dir);
-    }
-
-    if (isset($_GET['com_sort'])) {
-      if ($_GET['com_sort'] == "replies") {
-        $sort = 'replies';
-      }
-      array_push($url_params, 'com_sort='.$sort);
-    }
-
-    if (isset($_GET['com_date1'])) {
-      $date1 = $this->date_format($_GET['com_date1']);
-      array_push($url_params, 'com_date1='.$date1);
-    }
-
-    if (isset($_GET['com_date2'])) {
-      $date2 = $this->date_format($_GET['com_date2']);
-      array_push($url_params, 'com_date2='.$date2);
-    }
-
-    if (isset($_GET['com_search'])) {
-      array_push($url_params, 'com_search='.$_GET['com_search']);
+    $params = $this->get_params();
+    foreach ($params as $key => $val) {
+      array_push($url_params, "$key=$val");
     }
 
     return $url_params;
@@ -338,7 +305,7 @@ class Co_Mment_Sort_Public {
    * 
    *
    * @since     1.0.0
-   * @return    array    
+   * @return    array
    */
   public function comments_pagenum_link($content) {
 
@@ -361,7 +328,7 @@ class Co_Mment_Sort_Public {
    * 
    *
    * @since     1.0.0
-   * @return    array    
+   * @return    array
    */
   public function date_format($date) {
     // 2016-01-27 00:02:17
@@ -373,7 +340,7 @@ class Co_Mment_Sort_Public {
    * 
    *
    * @since     1.0.0
-   * @return    array    
+   * @return    array
    */
   public function url_param_valid($param) {
     if($param === "" || $param === false || $param === null) {
@@ -386,7 +353,7 @@ class Co_Mment_Sort_Public {
   /**
    * 
    *
-   * @since     1.0.0
+   * @since     1.0.1
    * @return    array
    */
   public function get_params() {
@@ -458,29 +425,26 @@ class Co_Mment_Sort_Public {
     }
 
     if (have_comments()){
-      
-
-      // co_mment_sort_display_sort($inputSort, $inputDir, $dateState, $repliesState );
-      // co_mment_sort_display_filter_date($date1, $date2);
-      // co_mment_sort_display_filter_search($search);
-
       co_mment_sort_display_sort($params, true);
       co_mment_sort_display_filter_date($params, true);
       co_mment_sort_display_filter_search($params, true);
     } else {
       // No comments,
+      
       // show ui to undo if date or search params
 
       if (isset($date1) || isset($date2)) {
         //co_mment_sort_display_filter_date($date1, $date2);
-        
+        $has_dates = true;
         co_mment_sort_display_filter_date($params, false);
       }
       if (isset($search)) {
-        //co_mment_sort_display_filter_search($search);
-        
+        $has_search = true;
         co_mment_sort_display_filter_search($params, false);
       }
+
+      // display message with a clear date/search button
+      co_mment_sort_display_no_results($has_dates, $has_search);
     }
   }
 

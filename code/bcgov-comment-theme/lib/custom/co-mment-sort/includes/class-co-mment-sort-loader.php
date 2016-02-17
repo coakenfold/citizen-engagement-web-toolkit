@@ -3,7 +3,7 @@
 /**
  * Register all actions and filters for the plugin
  *
- * @link       http://oakenfold.ca
+ * @link       http://oakenfold.ca/co-mment-sort
  * @since      1.0.0
  *
  * @package    Co_Mment_Sort
