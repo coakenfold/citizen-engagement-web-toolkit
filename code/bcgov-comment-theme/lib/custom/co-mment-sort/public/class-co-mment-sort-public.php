@@ -158,6 +158,33 @@ class Co_Mment_Sort_Public {
   /**
    * 
    *
+   * @since     1.0.2
+   * @return    
+   */
+  public function get_comment_more($comments, $direction_bool) {
+
+    $walk = new Co_Mment_Walker_More();
+
+    $walkOutput = $walk->walk( $comments, 0 );
+    echo 'EKJERLKEJRLKEJ';
+    print_r($walkOutput);
+    echo 'EKJERLKEJRLKEJ';
+//    $walkOutputDate = $walkOutput[1];
+//
+//    if ($direction_bool == true) {
+//      sasort($walkOutputDate);
+//    } else {
+//      sarsort($walkOutputDate);
+//    }
+//    $comment_root_sorted = $walkOutputDate;
+//    $comments_sorted = $this->merge_comment_array($comments, $comment_root_sorted);
+//    return $comments_sorted;
+      return $comments;
+  }
+
+  /**
+   * 
+   *
    * @since     1.0.0
    * @return    array    Sorted comments array
    */
@@ -199,7 +226,7 @@ class Co_Mment_Sort_Public {
     }
 
 
-    if ($date1 && $date2) {
+    if (isset($date1) && isset($date2)) {
       $walk = new Co_Mment_Walker_Filter_Date_Range();
       
       $walker_args = ['date', $date1, $date2];
@@ -226,13 +253,13 @@ class Co_Mment_Sort_Public {
    * @since     1.0.1
    * @return    
    */
-  public function get_comment_filter_search($comments, $args) {
+  public function get_comment_filter_search($comments, $args=array()) {
     if (count($comments) == 0) {
       return $comments;
     };
 
-    $g_com_search = $_GET['com_search'];
-    if (isset($g_com_search)) {
+    if (isset($_GET['com_search'])) {
+      $g_com_search = $_GET['com_search'];
       if ($this->url_param_valid($g_com_search)) {
         // url decode
         $search = explode(" ", urldecode($g_com_search));
@@ -315,7 +342,7 @@ class Co_Mment_Sort_Public {
 
     $urlParams = join('&', $this->get_url_params_array());
 
-    if ($urlParts['query']) {
+    if (array_key_exists('query', $urlParts)) {
       $urlPost = $urlParts['query'] ."&". $urlParams;
     } else {
       $urlPost = "?". $urlParams;

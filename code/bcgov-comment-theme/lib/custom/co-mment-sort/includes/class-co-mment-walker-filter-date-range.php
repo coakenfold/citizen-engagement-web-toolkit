@@ -26,7 +26,7 @@ class Co_Mment_Walker_Filter_Date_Range extends Walker {
 
   // Displays start of an element. E.g '<li> Item Name'
   // @see Walker::start_el()
-  function start_el(&$output, $item, $depth=0, $args=array()) {
+  function start_el(&$output, $item, $depth=0, $args=array(), $current_object_id=0) {
     // $args[0]//type: date, search
     // $args[1]//data1: date start, search term
     // $args[2]//data2: date end

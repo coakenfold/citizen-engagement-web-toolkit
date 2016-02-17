@@ -135,6 +135,7 @@ class Co_Mment_Sort {
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-co-mment-walker-sort.php';
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-co-mment-walker-filter-date-range.php';
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-co-mment-walker-filter-search.php';
+//    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-co-mment-walker-more.php';
 
 		$this->loader = new Co_Mment_Sort_Loader();
 
@@ -194,6 +195,7 @@ class Co_Mment_Sort {
     $this->loader->add_filter( 'comments_array', $plugin_public, 'get_comment_sort');
     $this->loader->add_filter( 'comments_array', $plugin_public, 'get_comment_filter_date_range');
     $this->loader->add_filter( 'comments_array', $plugin_public, 'get_comment_filter_search');
+//    $this->loader->add_filter( 'comments_array', $plugin_public, 'get_comment_more');
 
     //$this->loader->add_filter( 'previous_comments_link_attributes', $plugin_public, 'comments_link_attributes');
     //$this->loader->add_filter( 'next_comments_link_attributes', $plugin_public, 'comments_link_attributes');
