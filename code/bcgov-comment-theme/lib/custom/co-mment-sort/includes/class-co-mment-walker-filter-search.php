@@ -14,6 +14,11 @@ class Co_Mment_Walker_Filter_Search extends Walker {
     $word_lower = strtolower($word);
     return !!preg_match('#\b' . preg_quote($word_lower, '#') . '\b#i', $str_lower);
   }
+  function contains_search($str, $word){
+    $str_lower = strtolower($str);
+    $word_lower = strtolower($word);
+    return !!preg_match('#' . preg_quote($word_lower, '#') . '#i', $str_lower);
+  }
   
   // Set the properties of the element which give the ID of the current item and its parent
   var $db_fields = array( 'parent' => 'comment_parent', 'id' => 'comment_ID' );
@@ -26,7 +31,12 @@ class Co_Mment_Walker_Filter_Search extends Walker {
     // check comment content
     foreach ($args as $key => $val) {
       if ($key !== 'has_children') {
-        if ($this->contains_word($item->comment_content, $val)) {
+        // search by word boundaries
+        //   if ($this->contains_word($item->comment_content, $val)) {
+        // search using shell patterns
+        //   if (fnmatch("*".$val."*", $item->comment_content)) {
+        // search ignoring word boundaries
+        if ($this->contains_search($item->comment_content, $val)) {
           array_push($this->comments_output, $item);
           $content_match = true;
           break;

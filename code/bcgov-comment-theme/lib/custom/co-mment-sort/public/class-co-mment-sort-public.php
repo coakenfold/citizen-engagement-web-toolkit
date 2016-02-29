@@ -440,15 +440,20 @@ class Co_Mment_Sort_Public {
   public function comments_ui() {
 
     $params = $this->get_params();
+    $has_dates = false;
+    $has_search = false;
 
     if (array_key_exists('com_search', $params)) {
         $search = $params['com_search'];
+        $has_search = true;
     }
     if (array_key_exists('com_date1', $params)) {
         $date1 = $params['com_date1'];
+        $has_dates = true;
     }
     if (array_key_exists('com_date2', $params)) {
         $date2 = $params['com_date2'];
+        $has_dates = true;
     }
 
     if (have_comments()){
@@ -456,22 +461,21 @@ class Co_Mment_Sort_Public {
       co_mment_sort_display_filter_date($params, true);
       co_mment_sort_display_filter_search($params, true);
     } else {
-      // No comments,
-      
-      // show ui to undo if date or search params
+      if ($has_search === true || $has_dates === true) {
+        // No comments,
+        
+        // show ui to undo if date or search params
 
-      if (isset($date1) || isset($date2)) {
-        //co_mment_sort_display_filter_date($date1, $date2);
-        $has_dates = true;
-        co_mment_sort_display_filter_date($params, false);
-      }
-      if (isset($search)) {
-        $has_search = true;
-        co_mment_sort_display_filter_search($params, false);
-      }
+        if (isset($date1) || isset($date2)) {
+          co_mment_sort_display_filter_date($params, false);
+        }
+        if (isset($search)) {
+          co_mment_sort_display_filter_search($params, false);
+        }
 
-      // display message with a clear date/search button
-      co_mment_sort_display_no_results($has_dates, $has_search);
+        // display message with a clear date/search button
+        co_mment_sort_display_no_results($has_dates, $has_search);
+      }
     }
   }
 

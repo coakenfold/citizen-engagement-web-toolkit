@@ -157,17 +157,16 @@ function co_mment_sort_display_filter_search($params, $hasComments) {
 function co_mment_sort_display_no_results($has_dates=false, $has_search=false) { 
 ?>
 <div class='co_message'>
-  <?php if ($has_dates == true && $has_search == true) {
+  <?php 
+  $msg = 'No comments found.';
+  $btn = 'Clear Filter/Search';
+  if ($has_dates == true && $has_search == true) {
     $msg = 'No comments match the selected date range &amp; search term.';
     $btn = 'Clear Date Range &amp; Search';
   }
   if ($has_dates == true && $has_search == false) {
     $msg = 'No comments match the selected date range.';
     $btn = 'Clear Date Range';
-  }
-  if ($has_dates == false && $has_search == true) {
-    $msg = 'No comments match the search term.';
-    $btn = 'Clear Search';
   }
   ?>
   <h4><?php echo $msg; ?></h4>
